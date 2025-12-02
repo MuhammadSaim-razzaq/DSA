@@ -1,0 +1,54 @@
+include irvine32.inc 
+.data
+    a word 5
+    b word 6
+.code
+main proc
+    push b
+    push a
+    call AddTwo
+exit
+main endp
+end main
+
+AddTwo proc
+    push ebp
+    mov ebp, esp
+    mov eax,[ebp+6]
+    add eax,[ebp+8]
+    ret
+AddTwo endp
+
+
+
+
+//=========== using equ
+
+y_param EQU [ebp+8]
+x_param EQU [ebp+6]
+
+ADDto proc
+    push ebp
+    mov ebp,esp
+    mov eax,y_param
+    add eax,x_param
+    pop ebp
+    ret
+ADDto endp
+
+//============Passing by reference (pointer)
+
+.data
+    count word 10
+    arr word count DUP(?)
+
+.code
+    push offset arr
+    push count
+    call ArrayFill
+
+ArrayFill proc
+    push ebp
+    mov ebp, esp
+    pushad
+    mov esi, []
